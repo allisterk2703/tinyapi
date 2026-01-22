@@ -26,7 +26,8 @@ docker-run-indefinitely: docker-build
 		--name $(CONTAINER_NAME) \
 		--restart unless-stopped \
 		-p $(PORT):8000 \
-		$(IMAGE_NAME)
+		$(IMAGE_NAME) \
+		uvicorn main:app --host 0.0.0.0 --port 8000 --root-path /tinyapi
 
 docker-stop:
 	docker stop $(CONTAINER_NAME) || true
