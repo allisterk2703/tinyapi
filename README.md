@@ -21,6 +21,8 @@ make docker-build            # Build Docker image
 make docker-run              # Build and run with Docker
 make docker-run-indefinitely # Run in background
 make docker-stop             # Stop container
+make start-locust            # Start Locust
+make stop-locust             # Stop Locust
 ```
 
 ## Author
