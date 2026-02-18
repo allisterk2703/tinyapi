@@ -2,7 +2,7 @@ from locust import HttpUser, between, task
 
 
 class TinyApiUser(HttpUser):
-    host = "http://127.0.0.1:8000"
+    host = "http://127.0.0.1:8001"
     wait_time = between(1, 2)
 
     @task(3)
