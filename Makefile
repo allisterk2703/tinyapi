@@ -1,4 +1,4 @@
-.PHONY: install run test docker-build docker-run docker-run-indefinitely docker-stop
+.PHONY: install run test docker-build docker-run docker-run-indefinitely docker-stop start-locust stop-locust
 
 PORT=8001
 IMAGE_NAME=tinyapi
@@ -32,3 +32,9 @@ docker-run-indefinitely: docker-build
 docker-stop:
 	docker stop $(CONTAINER_NAME) || true
 	docker rm $(CONTAINER_NAME) || true
+
+start-locust:
+	locust
+
+stop-locust:
+	fuser -k 8089/tcp
