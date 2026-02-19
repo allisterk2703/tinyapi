@@ -8,8 +8,9 @@ Minimal FastAPI service exposing two endpoints for health checks and random numb
 
 ## Network Configuration
 
-- Docker Internal Port: `8000`
-- Local / Host Port: `8001`
+<p align="center">
+  <img src=".github/schema.png" alt="Schema" width="400">
+</p>
 
 ## Commands
 
