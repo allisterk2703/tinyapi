@@ -15,15 +15,15 @@ Minimal FastAPI service exposing two endpoints for health checks and random numb
 ## Commands
 
 ```bash
-make install                 # Install dependencies
-make run                     # Run the server (port 8001)
-make test                    # Run tests
-make docker-build            # Build Docker image
-make docker-run              # Build and run with Docker
-make docker-run-indefinitely # Run in background
-make docker-stop             # Stop container
-make start-locust            # Start Locust
-make stop-locust             # Stop Locust
+make install                    # Install dependencies
+make run                        # Run the server (on port 8001)
+make test                       # Run tests
+make docker-build               # Build image
+make docker-run                 # Build image and run container
+make docker-run-indefinitely    # Build image and run in background indefinitely
+make docker-stop                # Stop and remove container
+make start-locust               # Start Locust
+make stop-locust                # Stop Locust
 ```
 
 ## Author
