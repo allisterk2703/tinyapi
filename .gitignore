@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Testing
+.pytest_cache/
+
+# Ruff
+.ruff_cache/
+
+# IDE
+.vscode/
+
+# Environment variables
+.env
+
+# draw.io
+*.bkp
+.venv/

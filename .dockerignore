@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+.github
+
+# Python
+__pycache__
+*.py[cod]
+.pytest_cache
+
+# IDE
+.vscode
+
+# Documentation
+README.md
+
+# Tests
+tests
+
+# Development files
+requirements-dev.txt
+Makefile
+pyproject.toml
