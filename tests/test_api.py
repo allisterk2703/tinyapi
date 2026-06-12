@@ -50,6 +50,22 @@ def test_random_multiple_calls():
         assert 0 <= value <= 100
 
 
+def test_port():
+    """Test the /port endpoint returns a port number."""
+    response = client.get("/port")
+    assert response.status_code == 200
+    data = response.json()
+    assert "port" in data
+    assert isinstance(data["port"], int)
+
+
+def test_port_env_override(monkeypatch):
+    """Test /port reflects the PORT env var."""
+    monkeypatch.setenv("PORT", "8002")
+    response = client.get("/port")
+    assert response.json() == {"port": 8002}
+
+
 def test_invalid_endpoint():
     """Test that invalid endpoints return 404."""
     response = client.get("/invalid")

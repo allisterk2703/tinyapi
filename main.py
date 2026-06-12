@@ -1,3 +1,4 @@
+import os
 import random
 
 from fastapi import FastAPI
@@ -47,3 +48,24 @@ def random_number():
         ```
     """
     return {"value": random.randint(0, 100)}
+
+
+@app.get("/port", summary="Port info", tags=["Info"])
+def port():
+    """
+    Returns the port this instance is listening on.
+
+    Useful when running multiple containers behind a load balancer
+    to verify which instance handled the request.
+
+    Returns:
+        dict: A dictionary containing the port number.
+
+    Example:
+        ```json
+        {
+            "port": 8001
+        }
+        ```
+    """
+    return {"port": int(os.environ.get("PORT", 8000))}
