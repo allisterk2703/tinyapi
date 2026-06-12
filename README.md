@@ -4,7 +4,7 @@
 
 # tinyapi
 
-Minimal FastAPI service exposing two endpoints for health checks and random number generation.
+Minimal FastAPI service exposing three endpoints: health check, random number generation, and port info.
 
 ## Network Configuration
 

@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 app = FastAPI(
     title="tinyapi",
-    description="Minimal FastAPI service exposing two endpoints for health checks and random number generation.",
+    description="Minimal FastAPI service exposing three endpoints: health check, random number generation, and port info.",
     version="0.1.0",
     contact={
         "name": "Allister K.",
