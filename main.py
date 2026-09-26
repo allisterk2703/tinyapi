@@ -2,6 +2,9 @@ import os
 import random
 
 from fastapi import FastAPI
+from opentelemetry import metrics, trace
+
+from telemetry import setup_telemetry
 
 
 app = FastAPI(
@@ -11,6 +14,14 @@ app = FastAPI(
     contact={
         "name": "Allister K.",
     },
+)
+
+setup_telemetry(app)
+
+meter = metrics.get_meter(__name__)
+random_values = meter.create_histogram(
+    "tinyapi.random.value",
+    description="Values returned by the /random endpoint",
 )
 
 
@@ -47,7 +58,10 @@ def random_number():
         }
         ```
     """
-    return {"value": random.randint(0, 100)}
+    value = random.randint(0, 100)
+    trace.get_current_span().set_attribute("random.value", value)
+    random_values.record(value)
+    return {"value": value}
 
 
 @app.get("/port", summary="Port info", tags=["Info"])

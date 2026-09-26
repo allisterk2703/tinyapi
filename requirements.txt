@@ -1,3 +1,6 @@
 fastapi==0.120.4
 locust==2.43.3
 uvicorn==0.38.0
+opentelemetry-sdk==1.45.0
+opentelemetry-exporter-otlp-proto-http==1.45.0
+opentelemetry-instrumentation-fastapi==0.66b0
