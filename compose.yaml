@@ -1,0 +1,35 @@
+# 3 replicas behind the nginx upstream `tinyapi` on the RPi5 (round-robin on 8001/8002/8003).
+# OTLP export is off unless OTEL_ENDPOINT is set, e.g. OTEL_ENDPOINT=http://host.docker.internal:4318.
+
+x-tinyapi: &tinyapi
+  image: tinyapi
+  build: .
+  restart: unless-stopped
+  command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--root-path", "/tools/tinyapi"]
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+services:
+  tinyapi-1:
+    <<: *tinyapi
+    container_name: tinyapi-1
+    ports: ["8001:8000"]
+    environment:
+      PORT: "8001"
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_ENDPOINT:-}
+
+  tinyapi-2:
+    <<: *tinyapi
+    container_name: tinyapi-2
+    ports: ["8002:8000"]
+    environment:
+      PORT: "8002"
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_ENDPOINT:-}
+
+  tinyapi-3:
+    <<: *tinyapi
+    container_name: tinyapi-3
+    ports: ["8003:8000"]
+    environment:
+      PORT: "8003"
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_ENDPOINT:-}

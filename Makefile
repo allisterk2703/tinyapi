@@ -62,21 +62,12 @@ docker-stop: ## Stop and remove the single container
 
 # ── 3-replica cluster (nginx round-robin on ports 8001/8002/8003) ─────────────
 
-docker-run-replicas: docker-stop docker-stop-replicas docker-build ## Deploy 3 replicas on ports 8001, 8002, 8003
-	docker run -d --name tinyapi-1 --restart unless-stopped \
-		-p 8001:8000 -e PORT=8001 $(OTEL_FLAGS) $(IMAGE_NAME) \
-		uvicorn main:app --host 0.0.0.0 --port 8000 --root-path /tools/tinyapi
-	docker run -d --name tinyapi-2 --restart unless-stopped \
-		-p 8002:8000 -e PORT=8002 $(OTEL_FLAGS) $(IMAGE_NAME) \
-		uvicorn main:app --host 0.0.0.0 --port 8000 --root-path /tools/tinyapi
-	docker run -d --name tinyapi-3 --restart unless-stopped \
-		-p 8003:8000 -e PORT=8003 $(OTEL_FLAGS) $(IMAGE_NAME) \
-		uvicorn main:app --host 0.0.0.0 --port 8000 --root-path /tools/tinyapi
+docker-run-replicas: docker-stop ## Build and deploy 3 replicas on ports 8001, 8002, 8003 (compose.yaml)
+	OTEL_ENDPOINT=$(OTEL_ENDPOINT) docker compose up -d --build
 	@echo "Replicas running — nginx round-robin across :8001 :8002 :8003"
 
 docker-stop-replicas: ## Stop and remove the 3 replicas
-	docker stop tinyapi-1 tinyapi-2 tinyapi-3 2>/dev/null || true
-	docker rm   tinyapi-1 tinyapi-2 tinyapi-3 2>/dev/null || true
+	docker compose down
 
 # ── Observability (OpenTelemetry) ─────────────────────────────────────────────
 

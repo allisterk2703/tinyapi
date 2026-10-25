@@ -44,7 +44,7 @@ OpenTelemetry setup is in `telemetry.py` (`setup_telemetry(app)`, called from `m
 
 ## Deployment
 
-In production the app runs in Docker, bound to port 8000 internally and mapped to host port 8001. Nginx on the RPi5 proxies `allisterkohn.com/tools/tinyapi/` → `127.0.0.1:8001`. The `--root-path /tinyapi` flag is passed to uvicorn in `docker-run-indefinitely` so FastAPI generates correct OpenAPI URLs behind the proxy prefix.
+In production the app runs as 3 replicas defined in `compose.yaml` (`tinyapi-1/2/3`, host ports 8001/8002/8003, nginx upstream `tinyapi`), deployed with `make docker-run-replicas` (`docker compose up -d --build`) and stopped with `make docker-stop-replicas`. Each container listens on 8000 internally. Nginx on the RPi5 proxies `allisterkohn.com/tools/tinyapi/` → `127.0.0.1:8001`. The `--root-path /tinyapi` flag is passed to uvicorn in `docker-run-indefinitely` so FastAPI generates correct OpenAPI URLs behind the proxy prefix.
 
 Docker targets accept `OTEL_ENDPOINT=...` (e.g. `http://host.docker.internal:4318`), passed to containers as `OTEL_EXPORTER_OTLP_ENDPOINT`; `--add-host=host.docker.internal:host-gateway` makes that hostname work on the RPi (Linux).
 
