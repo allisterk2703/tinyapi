@@ -40,7 +40,7 @@ Tests in `tests/test_api.py` use `fastapi.testclient.TestClient` (no running ser
 
 Load testing is in `locustfile.py` — targets `http://127.0.0.1:8001` with a 3:1 `/random`:`/health` task ratio.
 
-OpenTelemetry setup is in `telemetry.py` (`setup_telemetry(app)`, called from `main.py`). SDK tracer/meter providers are always installed; OTLP/HTTP exporters are only attached when `OTEL_EXPORTER_OTLP_ENDPOINT` is set (exporters read it from env and append `/v1/traces`, `/v1/metrics`). Resource: `service.name` from `OTEL_SERVICE_NAME` (default `tinyapi`), `service.instance.id` from `PORT`. `tests/test_telemetry.py` asserts spans via an in-memory exporter.
+OpenTelemetry setup is in `telemetry.py` (`setup_telemetry(app)`, called from `main.py`). SDK tracer/meter providers are always installed; OTLP/HTTP exporters are only attached when `OTEL_EXPORTER_OTLP_ENDPOINT` is set (exporters read it from env and append `/v1/traces`, `/v1/metrics`). Resource: `service.name` from `OTEL_SERVICE_NAME` (default `tinyapi`), `service.instance.id` from `OTEL_SERVICE_INSTANCE_ID` (default: hostname, i.e. the pod name in Kubernetes where every pod has `PORT=8000`). `/health` is excluded from tracing (probe noise). `tests/test_telemetry.py` asserts spans via an in-memory exporter.
 
 ## Deployment
 

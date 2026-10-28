@@ -1,4 +1,5 @@
 import os
+import socket
 
 from fastapi import FastAPI
 from opentelemetry import metrics, trace
@@ -19,12 +20,14 @@ def setup_telemetry(app: FastAPI) -> None:
     SDK providers are always installed so spans and metrics are recorded in-process.
     OTLP/HTTP exporters are only attached when OTEL_EXPORTER_OTLP_ENDPOINT is set
     (e.g. http://localhost:4318); the exporters read the endpoint from the env themselves.
+    service.instance.id defaults to the hostname (pod name in Kubernetes, where every pod
+    shares PORT=8000) so replicas don't collapse into a single instance.
     """
     resource = Resource.create(
         {
             "service.name": os.environ.get("OTEL_SERVICE_NAME", "tinyapi"),
             "service.version": app.version,
-            "service.instance.id": os.environ.get("PORT", "8000"),
+            "service.instance.id": os.environ.get("OTEL_SERVICE_INSTANCE_ID", socket.gethostname()),
         }
     )
     export = bool(os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT"))
@@ -37,4 +40,5 @@ def setup_telemetry(app: FastAPI) -> None:
     readers = [PeriodicExportingMetricReader(OTLPMetricExporter())] if export else []
     metrics.set_meter_provider(MeterProvider(resource=resource, metric_readers=readers))
 
-    FastAPIInstrumentor.instrument_app(app)
+    # Probes hit /health every few seconds: tracing them is noise
+    FastAPIInstrumentor.instrument_app(app, excluded_urls="health")
