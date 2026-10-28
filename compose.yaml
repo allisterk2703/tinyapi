@@ -13,6 +13,7 @@ services:
   tinyapi-1:
     <<: *tinyapi
     container_name: tinyapi-1
+    hostname: tinyapi-1
     ports: ["8001:8000"]
     environment:
       PORT: "8001"
@@ -21,6 +22,7 @@ services:
   tinyapi-2:
     <<: *tinyapi
     container_name: tinyapi-2
+    hostname: tinyapi-2
     ports: ["8002:8000"]
     environment:
       PORT: "8002"
@@ -29,6 +31,7 @@ services:
   tinyapi-3:
     <<: *tinyapi
     container_name: tinyapi-3
+    hostname: tinyapi-3
     ports: ["8003:8000"]
     environment:
       PORT: "8003"
